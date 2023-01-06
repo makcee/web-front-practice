@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>The First Web Page</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="container">
+            <div id="info">
+                <img id="avatar" src="customer.png" alt="user" />
+                <div id="general_info">
+                    <div id="name">User name</div>
+                    <div id="blog">User blog</div>
+                    <div id="location">User location</div>
+                </div>
+                <pre id="bio">Biography</pre>
+            </div>
+            <form name="gitForm" action="https://api.github.com/users/1995parham" method="get" onsubmit="setInfo(event, username.value)">
+                <input type="text" name="username" value="" maxlength="64" />
+                <input type="submit" value="Submit" />
+                <div id="bad_input">User doesn't exist</div>
+            </form>
+        </div>
+        <script>
+            
+            function setInfo(event, user) {
+                event.preventDefault(); // to not show the response in the current tab
+                url = "https://api.github.com/users/" + user; // get the full address
+                if (localStorage.getItem(user)) { // if item already in the local storage ...
+                    // show an output to user saying it was retrieved from local storage
+                    // the div element was not being displayed before
+                    document.getElementById("bad_input").style.display = "block";
+                    document.getElementById("bad_input").style.backgroundColor = "green";
+                    document.getElementById("bad_input").style.color = "white";
+                    document.getElementById("bad_input").innerHTML = "Read from local storage";
+
+                    // make the object back to a json string
+                    var knownUser = JSON.parse(localStorage.getItem(user));
+                    // set image
+                    document.getElementById("avatar").src = knownUser.avatar_url;
+                    if ( document.getElementById("avatar").alt != null ) document.getElementById("avatar").alt = user;
+
+                    // set name only if it has one
+                    // other wise say "no name"
+                    if (knownUser.name != null) document.getElementById("name").innerHTML = knownUser.name;
+                    else document.getElementById("name").innerHTML = "no name";
+
+                    // set blog only if it has one
+                    // other wise say "no blog"
+                    if (knownUser.blog != "") document.getElementById("blog").innerHTML = knownUser.blog;
+                    else document.getElementById("blog").innerHTML = "no blog";
+
+                    // set location only if it has one
+                    // other wise say "no location"
+                    if (knownUser.location != null) document.getElementById("location").innerHTML = knownUser.location;
+                    else document.getElementById("location").innerHTML = "no location";
+
+                    // set bio only if it has one
+                    // other wise say "no bio"
+                    if (knownUser.bio != null) document.getElementById("bio").innerHTML = knownUser.bio;
+                    else document.getElementById("bio").innerHTML = "no bio";
+
+                    return;
+                }
+                
+                // user not saved in local storage before
+                // fetch the http response
+                fetch(url).then(res => {
+                    // user not defined ...
+                    if (!res.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // it's a new user so don't show message for retrieval from local storage
+                    document.getElementById("bad_input").style.display = "none";
+                    return res.json(); // return the json object instead of the http response
+                }).then(person => {
+                    // store item in local storage for lated use
+                    localStorage.setItem(user, JSON.stringify(person));
+                    
+                    // set image
+                    document.getElementById("avatar").src = person.avatar_url;
+                    if ( document.getElementById("avatar").alt != null ) document.getElementById("avatar").alt = user;
+
+                    // set name only if it has one
+                    // other wise say "no name"
+                    if (person.name != null) document.getElementById("name").innerHTML = person.name;
+                    else document.getElementById("name").innerHTML = "no name";
+
+                    // set blog only if it has one
+                    // other wise say "no blog"
+                    if (person.blog != "") document.getElementById("blog").innerHTML = person.blog;
+                    else document.getElementById("blog").innerHTML = "no blog";
+
+                    // set location only if it has one
+                    // other wise say "no location"
+                    if (person.location != null) document.getElementById("location").innerHTML = person.location;
+                    else document.getElementById("location").innerHTML = "no location";
+
+                    // set bio only if it has one
+                    // other wise say "no bio"
+                    if (person.bio != null) document.getElementById("bio").innerHTML = person.bio;
+                    else document.getElementById("bio").innerHTML = "no bio";
+                })
+                .catch(error => {
+                    // caught user undefined , show appropriate messsage
+                    document.getElementById("bad_input").style.display = "block";
+                    document.getElementById("bad_input").style.backgroundColor = "black";
+                    document.getElementById("bad_input").style.color = "red";
+                    document.getElementById("bad_input").innerHTML = "User doesn't exist";
+
+                    // reset messages to default
+                    document.getElementById("avatar").src = "customer.png";
+                    document.getElementById("avatar").alt = "user";
+                    document.getElementById("name").innerHTML = "User name";
+                    document.getElementById("blog").innerHTML = "User blog";
+                    document.getElementById("location").innerHTML = "User location";
+                    document.getElementById("bio").innerHTML = "Biography";
+                });
+            }
+        </script>
+    </body>
+</html>

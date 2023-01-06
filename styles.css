@@ -1,0 +1,112 @@
+body {
+    margin: 0; /* completely fit screen, no scrollbar */
+}
+
+/* the whole rectangular area */
+div#container {
+    /* width and height filling parent (body) completely */
+    height: 100vh;
+    width: 100vw;
+    background-color: rgb(198,198,198); /* light gray background */
+    /* 1 row two columns will be displaed in a row */
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* these two lines necessary to make them all in center */
+    align-items: center;
+    column-gap: 15px;
+}
+
+div#info {
+    background-color: white;
+    
+    /* two rows two columns with grid */
+    display: grid;
+    grid-template-columns: auto auto; /* maximum two columns per row */
+    grid-template-rows: 50px 50px;
+    height: 200px; /* needed for below line to actually have an impact */
+    align-content: space-around;
+
+    /* a round solid black border */
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 1rem;
+}
+
+/* the avatar img with nice appearnace and it's to the left */
+img#avatar {
+    padding: 5px;
+    margin: 5px;
+    width: 50px;
+    height: 50px;
+    float: left;
+}
+
+/* name, blog, location */
+div#general_info {
+    padding: 5px;
+    margin: 5px;
+    background-color: white;
+    /* 3 rows and 1 column starting from top */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    
+}
+
+
+pre#bio {
+    /* aligning biography with image avatar */
+    padding: 5px;
+    margin: 5px;
+}
+
+form {
+    /* one column */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* completely centralized */
+    align-items: center;
+    row-gap: 15px;
+    height: 200px;
+
+    background-color: white;
+
+    /* a round solid black border */
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 1rem;
+}
+
+/* the text field is child of form */
+input[type=text] {
+    size: 20;
+    width: 80%; /* to have the look of the required form */
+    /* gap between rows of a column. could use gap property in fom instead */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+}
+
+/* the submit button is child of form */
+input[type=submit] {
+    width: 80%; /* to have the look of the required form */
+    /* gap between rows of a column. could use gap property in fom instead */
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+}
+
+div#bad_input {
+    /* either for user undefined or for local storage retrieval message 
+       the meassge is not displayed until encountered */
+    display: none;
+    /* the default look for user undefined 
+       but will get changed when needed with javascript */
+    color: red;
+    background-color: black;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
